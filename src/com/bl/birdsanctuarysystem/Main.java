@@ -57,32 +57,41 @@ public class Main {
 			
 			switch(option) {
 				case 1: 
-					Parrot parrot = new Parrot();
-					parrot.id = "p001";
-					Penguin penguin = new Penguin();
-					penguin.id = "pn001";
-					Ostrich ostrich = new Ostrich();
-					ostrich.id = "o001";
-					Duck duck = new Duck();
-					duck.id = "d001";
-					Penguin penguin2 = new Penguin();
-					penguin2.id = "pn002";
+					addTemporaryBirds();
+					addBird();
 					
-					BirdSanctuaryRepository birdSanctuaryRepository = BirdSanctuaryRepository.getInstance();
-					birdSanctuaryRepository.add(parrot);
-					birdSanctuaryRepository.add(penguin);
-					birdSanctuaryRepository.add(ostrich);
-					birdSanctuaryRepository.add(duck);
+//					Parrot parrot = new Parrot();
+//					parrot.id = "p001";
+//					Penguin penguin = new Penguin();
+//					penguin.id = "pn001";
+//					Ostrich ostrich = new Ostrich();
+//					ostrich.id = "o001";
+//					Duck duck = new Duck();
+//					duck.id = "d001";
+//					Penguin penguin2 = new Penguin();
+//					penguin2.id = "pn002";
+//					
+//					BirdSanctuaryRepository birdSanctuaryRepository = BirdSanctuaryRepository.getInstance();
+//					birdSanctuaryRepository.add(parrot);
+//					birdSanctuaryRepository.add(penguin);
+//					birdSanctuaryRepository.add(ostrich);
+//					birdSanctuaryRepository.add(duck);
 					
 					
 					break;
 				case 2:
 					System.out.println("Enter the bird name to remove");
-					birdSanctuaryRepository = BirdSanctuaryRepository.getInstance();
+					BirdSanctuaryRepository birdSanctuaryRepository = BirdSanctuaryRepository.getInstance();
 					String birdName = scanner.nextLine();
 					birdName = scanner.next();
 					Bird removeBird = birdSanctuaryRepository.getBird(birdName);
+					Bird bird2 = birdSanctuaryRepository.getBird(birdName);
+					if(bird2 == null) {
+						System.out.println("Bird not present");
+					}else {
 					birdSanctuaryRepository.remove(removeBird);
+					System.out.println("Removed bird");
+					}
 					break;
 				case 3: 
 					viewLayer.print();
@@ -102,7 +111,82 @@ public class Main {
 			}
 		}
 	}
+	
+	private void addBird() {
+		Scanner scanner = new Scanner(System.in);
+		Bird bird = new Bird();
+		System.out.println("Enter id:");
+		bird.id = scanner.nextLine();;
+		System.out.println("Enter name:");
+		bird.name = scanner.nextLine();;
+		System.out.println("Enter color:");
+		int count = 1; 
+		
+		for(Bird.Color color: EnumSet.allOf(Bird.Color.class)) {
+			System.out.println(count+". "+color);
+			count++;
+		}
+		
+		int colorChoice = scanner.nextInt();
+		
+		int count1 = 1;
+		for(Bird.Color color: EnumSet.allOf(Bird.Color.class)) {
+			if(colorChoice == count1) {
+				bird.color = color;
+				break;
+			}
+			count1++;
+		}
+		System.out.println("Can bird Fly?(enter true or false)");
+		Boolean canFly = scanner.nextBoolean();
+		bird.canFly = canFly;
+		
+		System.out.println("Can bird Swim?(enter true or false)");
+		Boolean canSwim = scanner.nextBoolean();
+		bird.canSwim = canSwim;
+		
+		BirdSanctuaryRepository birdSanctuaryRepository = BirdSanctuaryRepository.getInstance();
+		birdSanctuaryRepository.add(bird);
+		
+	}
 
+	private void addTemporaryBirds() {
+		
+		
+		Bird duck = new Bird();
+		duck.name = "Duck";
+		duck.id = "d001";
+		duck.color = Bird.Color.WHITE;
+		duck.canFly = true;
+		duck.canSwim = true;
+		BirdSanctuaryRepository.getInstance().add(duck);
+		
+		Bird penguin = new Bird();
+		penguin.name = "Penguin";
+		penguin.id = "pn001";
+		penguin.color = Bird.Color.BLACK_WHITE;
+		penguin.canFly = false;
+		penguin.canSwim = true;
+		BirdSanctuaryRepository.getInstance().add(penguin);
+		
+		Bird parrot = new Bird();
+		parrot.name = "Parrot";
+		parrot.id = "p001";
+		parrot.color = Bird.Color.GREEN;
+		parrot.canFly = true;
+		parrot.canSwim = false;
+		BirdSanctuaryRepository.getInstance().add(parrot);
+		
+		Bird ostrich = new Bird();
+		ostrich.name = "Ostrich";
+		ostrich.id = "o001";
+		ostrich.color = Bird.Color.GREY;
+		ostrich.canFly = false;
+		ostrich.canSwim = false;
+		BirdSanctuaryRepository.getInstance().add(ostrich);
+		
+	}
+	
 	private void editBird() {
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("Enter the bird name to edit");
