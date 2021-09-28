@@ -86,11 +86,14 @@ public class Main {
 					birdName = scanner.next();
 					Bird removeBird = birdSanctuaryRepository.getBird(birdName);
 					Bird bird2 = birdSanctuaryRepository.getBird(birdName);
-					if(bird2 == null) {
-						System.out.println("Bird not present");
-					}else {
-					birdSanctuaryRepository.remove(removeBird);
-					System.out.println("Removed bird");
+					try {
+						if(bird2 == null) {
+							throw new BirdNotFoundException("Bird not found");
+						}
+						birdSanctuaryRepository.remove(removeBird);
+						System.out.println("Removed bird");
+					}catch(BirdNotFoundException e) {
+						System.out.println("Exception occured");
 					}
 					break;
 				case 3: 
